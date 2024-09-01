@@ -13,7 +13,11 @@ export default class AdminController{
         const hashedPassword = await bcrypt.hash(userPassword, 12) ;
         const newUser = new AdminModel(userName, userEmail, hashedPassword, userType) ;
         const msg = await this.adminRepository.signup(newUser) ;
-        res.status(201).end(msg) ;
+        if(msg.userCreated){
+            return res.status(201).end(msg.message) ;
+        }else{
+            return res.status(200).end(msg.message) ;
+        }
     }
     async login(req,res){
         const {userEmail: email, userPassword: pass} = req.body ;
@@ -22,12 +26,12 @@ export default class AdminController{
             response(user) ;
         }) ;
         if(result.length == 0){
-            res.status(400).end("User does not exists!!") ;
+            res.status(401).end("User does not exists!!") ;
             return ;
         }
         const checkPass = await bcrypt.compare(pass, result[0].userPassword) ;
         if(!checkPass){
-            res.status(400).send("Unauthorized access") ;
+            res.status(401).send("Unauthorized access") ;
             return ;
         }
         // Authorized Person

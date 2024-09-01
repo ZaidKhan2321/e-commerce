@@ -13,7 +13,10 @@ export default class AdminRepository{
             }) ;
         }) ;
         if(result.length > 0){
-            return "User already exists!!!" ;
+            return {
+                userCreated: false,
+                message: "This User already exists!!"
+            } ;
         }
 
         connection.query(`insert into users_db(userName, userEmail, userPassword, userType, time_created) values('${newUser.userName}', '${newUser.userEmail}', '${newUser.userPassword}', '${newUser.userType}', '${new Date().toString()}') `, (err, results)=>{
@@ -21,7 +24,10 @@ export default class AdminRepository{
                 console.log("err: ",err) ;
             }
         }) ;
-        return "SignUp successfully done" ;
+        return {
+            userCreated: true,
+            message: "SignUp Successfully done. Let's Login now!!"
+        } ;
     }
     async login(email){
         const result = await new Promise((res, rej)=>{
