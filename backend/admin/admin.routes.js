@@ -11,8 +11,9 @@ router.post('/login', (req,res)=>{
     adminController.login(req,res) ;
 })
 
-router.get('/signup', (req,res)=>{
-    res.send("signup Page") ;
-})
+router.get('/logout', (req,res)=>{
+    adminController.logOut(req, res) ;
+}) ;
+
 
 export default router ;

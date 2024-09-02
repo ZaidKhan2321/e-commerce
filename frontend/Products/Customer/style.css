@@ -1,0 +1,17 @@
+.imgCont{
+    width : 30rem ;
+    height: 30rem ;
+    max-width: 800px;
+    max-height: 80vh;
+    margin: 2rem ;
+}
+.imgt{
+    width: 100% ;
+    height: 100% ;
+    object-fit: contain ;
+    border-radius: 3px;
+}
+.card-custom{
+    min-width: 300px ;
+    max-width: 900px;
+}

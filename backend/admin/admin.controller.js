@@ -3,6 +3,7 @@ import AdminModel from "./admin.model.js";
 import AdminRepository from "./admin.repository.js";
 import bcrypt from 'bcrypt' ;
 import jwt from 'jsonwebtoken' ;
+import session from "express-session";
 
 export default class AdminController{
     constructor(){
@@ -36,11 +37,21 @@ export default class AdminController{
         }
         // Authorized Person
         const token = jwt.sign(
-            {userId: result[0].id, email: result[0].userEmail},
+            {userId: result[0].id, email: result[0].userEmail, userType: result[0].userType},
             process.env.JWT_SECRET,
             {expiresIn: '1hr'}
         )
         req.session.token = token ;
-        res.status(200).send(result) ;
+        res.status(200).send(result[0]) ;
+    }
+    async logOut(req, res){
+        await req.session.destroy((err)=>{
+            if(err){
+                console.log(err) ;
+                return res.status(400).end("Logout unseccessful") ;
+            }else{
+                 return res.status(200).end("Logout Successfully") ;
+            }
+        })
     }
 }
